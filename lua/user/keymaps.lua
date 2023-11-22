@@ -46,8 +46,8 @@ keymap("i", "kj", "<ESC>", opts)
 
 -- Visual --
 -- Stay in indent mode
-keymap("v", "<", "<gv^", opts)
-keymap("v", ">", ">gv^", opts)
+keymap("v", "<S-tab>", "<gv^", opts)
+keymap("v", "<tab>", ">gv^", opts)
 
 -- Move text up and down
 keymap("v", "<A-j>", ":m '>+1<CR>gv=gv", opts)
@@ -60,27 +60,33 @@ keymap("x", "J", ":m '>+1<CR>gv=gv", opts)
 keymap("x", "K", ":m '<-2<CR>gv=gv", opts)
 keymap("x", "<A-j>", ":m '>+1<CR>gv=gv", opts)
 keymap("x", "<A-k>", ":m '<-2<CR>gv=gv", opts)
-
+-- better selection
+keymap("n", "<leader>a", "ggVG")
 -- Terminal --
 -- Better terminal navigation
 -- keymap("t", "<C-h>", "<C-\\><C-N><C-w>h", term_opts)
 -- keymap("t", "<C-j>", "<C-\\><C-N><C-w>j", term_opts)
 -- keymap("t", "<C-k>", "<C-\\><C-N><C-w>k", term_opts)
 -- keymap("t", "<C-l>", "<C-\\><C-N><C-w>l", term_opts)
-
-
+--
+--
 -- Plugins --
 -- Plugin related keymaps
 
+
+-- Open find_files
 keymap("n", '<leader>f', function()
     local status_ok, builtin = pcall(require, "telescope.builtin")
-      
     if not status_ok then
         vim.notify("Can't execute telescope keymap, no builtins found")
-        return
+       return
     end
     local themes = require("telescope.themes")
-    
     builtin.find_files(themes.get_dropdown({previewer=false}))
 
 end, opts)
+ 
+-- Toggle NvimTree
+keymap("n", "<leader>d", ":NvimTreeToggle<CR>", opts)
+
+keymap("x", "<leader>c", "gc", opts)

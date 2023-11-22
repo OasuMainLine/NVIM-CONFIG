@@ -26,9 +26,13 @@ vim.cmd([[
   augroup end
 ]])
 
+
+
+
 local attach_plugins = function (use)
 
-   use { "wbthomason/packer.nvim"} -- Have packer manage itself
+  use { "wbthomason/packer.nvim"} -- Have packer manage itself
+  use { "nvim-lua/popup.nvim"}
   use { "nvim-lua/plenary.nvim",} -- Useful lua functions used by lots of plugins
   
   -- Completion
@@ -36,11 +40,14 @@ local attach_plugins = function (use)
   use { "hrsh7th/cmp-buffer",} -- buffer completions
   use { "hrsh7th/cmp-path", } -- path completions
 	use { "saadparwaiz1/cmp_luasnip",} -- snippet completions
+  use {"L3MON4D3/LuaSnip", tag="v2.1.0", run="make install_jsregexp"}
 	use { "hrsh7th/cmp-nvim-lsp", }
 	use { "hrsh7th/cmp-nvim-lua", }
 
+  -- Comments
+  use { "numToStr/Comment.nvim",}
   -- LSP
-  use { "neovim/nvim-lspconfig", } 
+  use { "neovim/nvim-lspconfig", }
   use {
     "williamboman/mason.nvim"
   }
@@ -50,6 +57,13 @@ local attach_plugins = function (use)
   -- Highlighting
   use {
 	"nvim-treesitter/nvim-treesitter", run = ":TSUpdate"
+  }
+  -- File Explorer
+  use {
+    "nvim-tree/nvim-web-devicons"
+  }
+  use {
+    "nvim-tree/nvim-tree.lua"
   }
   -- Telescope
   use {
@@ -65,6 +79,36 @@ local attach_plugins = function (use)
 
    -- Colorschemes
   use "lunarvim/darkplus.nvim"
+
+  -- Statusline
+  use({
+    "NTBBloodbath/galaxyline.nvim",
+    -- your statusline
+    config = function()
+      require("user.plugins.galaxyline")
+    end,
+    -- some optional icons
+    requires = { "kyazdani42/nvim-web-devicons", opt = true }
+  })
+
+  -- Git
+ use({"lewis6991/gitsigns.nvim"})
+
+ -- startup
+ use {
+    'goolord/alpha-nvim',
+}
+
+
+  if packer_bootstrap then
+    require("packer").sync()
+  end
 end
 
-packer.startup(attach_plugins)
+packer.startup({attach_plugins, config= {
+  display = {
+    open_fn = function()
+      return require('packer.util').float({ border = 'single' })
+    end
+  }
+}})
