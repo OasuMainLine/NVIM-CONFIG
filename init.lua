@@ -1,4 +1,3 @@
--- hello dasd
 require "user.options"
 require "user.colorscheme"
 require "user.keymaps"
