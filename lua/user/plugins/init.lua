@@ -4,9 +4,10 @@ require "user.plugins.packer"
 --
 
 require "user.plugins.telescope"
-require "user.plugins.treesitter"
+require "user.plugins.treesitter".config()
 require "user.plugins.nvim-tree"
 require "user.plugins.harpoon"
 require "user.plugins.gitsigns"
 require "user.plugins.alpha"
 require "user.plugins.comment"
+require "user.plugins.sessions"

@@ -27,10 +27,14 @@ local function on_nvim_tree_attach(bufnr)
 end
 
 
--- OR setup with some options
 nvim_tree.setup({
   sort = {
     sorter = "case_sensitive",
+  },
+  actions = {
+    open_file = {
+      quit_on_open = true
+    }
   },
   view = {
     width = 30,

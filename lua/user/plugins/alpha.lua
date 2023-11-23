@@ -11,19 +11,16 @@ local buttons = {
     type = "group",
     val = {
         button("e", "  New file", "<cmd>ene <CR>"),
-        button("SPC s h", "󰊄  Recently opened files"),
-        button("SPC s r", "  Frecency/MRU"),
-        button("SPC s g", "󰈬  Find word"),
-        button("SPC s m", "  Jump to bookmarks"),
-        button("SPC s l", "  Open last session"),
+        button("SPC o h", "󰊄  Recently opened files", "<cmd>Telescope oldfiles <CR>"),
+        button("SPC o m", "  Open project", "<cmd>Telescope project <CR>"),
+        button("SPC s", "  Open last session", [[<cmd>lua require("sessions").load()<CR>]]),
     },
     opts = {
         spacing = 1,
     },
 }
 
+theme.section.footer.val = "Configuration by OasuMainLine"
+theme.config.layout[4] = buttons
 
-theme.config["opts"] = {
-    
-}
 alpha.setup(theme.config)

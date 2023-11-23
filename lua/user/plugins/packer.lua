@@ -69,9 +69,10 @@ local attach_plugins = function (use)
   use {
   'nvim-telescope/telescope.nvim', 
   tag = '0.1.4',
-  requires = { {'nvim-lua/plenary.nvim'} } 
+  requires = { {'nvim-lua/plenary.nvim'} }
   }
 
+  use {"nvim-telescope/telescope-project.nvim", requires = {{"nvim-telescope/telescope.nvim"}}}
   -- Null LS
   use {
      "jose-elias-alvarez/null-ls.nvim"
@@ -98,8 +99,8 @@ local attach_plugins = function (use)
  use {
     'goolord/alpha-nvim',
 }
-
-
+  -- sessions
+  use { "natecraddock/sessions.nvim"}
   if packer_bootstrap then
     require("packer").sync()
   end

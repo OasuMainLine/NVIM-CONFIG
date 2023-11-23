@@ -214,7 +214,7 @@ gls.right[4] = {
 }
 gls.right[5] = {
     GitIcon = {
-        provider = function() return '  ' end,
+        provider = function() return '  ' end,
         condition = buffer_not_empty and
             provider.check_git_workspace,
         highlight = {colors.middlegrey, colors.bg}
@@ -228,6 +228,12 @@ gls.right[6] = {
     }
 }
 gls.right[7] = {
+    Space = {
+        provider = function() return ' ' end,
+        highlight = {colors.section_bg, colors.bg}
+    }
+}
+gls.right[8] = {
     PerCent = {
         provider = 'LinePercent',
         separator = '',

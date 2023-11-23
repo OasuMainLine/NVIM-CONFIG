@@ -8,7 +8,7 @@ if not status_ok then
 end
 
 local actions = require "telescope.actions"
-
+local project_actions = require("telescope._extensions.project.actions")
 local setup_telescope =  { defaults = {
 
     prompt_prefix = " ",
@@ -75,7 +75,6 @@ local setup_telescope =  { defaults = {
 
         ["<PageUp>"] = actions.results_scrolling_up,
         ["<PageDown>"] = actions.results_scrolling_down,
-        
         ["?"] = actions.which_key,
       },
     },
@@ -94,14 +93,33 @@ local setup_telescope =  { defaults = {
   },
   extensions = {
     -- Your extension configuration goes here:
-    -- extension_name = {
-    --   extension_config_key = value,
-    -- }
+    project = {
+
+      on_project_selected = function (prompt_bufnr)
+          project_actions.change_working_directory(prompt_bufnr, false)
+          require("nvim-tree.api").tree.open()
+          local load = require("sessions").load
+          local session_name = vim.fn.stdpath("data") .. "/sessions/" .. "project."..prompt_bufnr
+          local status_ok = pcall(load, session_name, {autosave = true})
+          if not status_ok then
+            print("Creating session")
+            local save = require("sessions").save
+            local status_ok = pcall(save, session_name, {autosave = true})
+            if not status_ok then
+              print("Unable to save project session")
+              return 
+          end
+          print("Session saved")
+          return
+        end
+        print("Session loaded")
+      end
+     }
     -- please take a look at the readme of the extension you want to configure
   },
 }
 
 
-telescope.setup()
-
+telescope.setup(setup_telescope)
+telescope.load_extension("project")
 

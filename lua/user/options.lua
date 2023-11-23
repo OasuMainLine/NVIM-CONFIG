@@ -54,3 +54,5 @@ vim.opt.runtimepath:remove("/usr/share/vim/vimfiles")  -- separate vim plugins f
 -- Disabling netrw for nvim-tree to work
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
+
+

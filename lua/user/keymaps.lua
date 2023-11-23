@@ -54,6 +54,12 @@ keymap("v", "<A-j>", ":m '>+1<CR>gv=gv", opts)
 keymap("v", "<A-k>", ":m '<-2<CR>gv=gv", opts)
 keymap("v", "p", '"_dP', opts)
 
+-- Command mode
+-- Quit and save all buffers
+keymap("n", "<leader>q", ":bufdo wq!<CR>")
+
+-- Quits all buffers without saving
+keymap("n", "<A-q>", ":qa!<CR>")
 -- Visual Block --
 -- Move text up and down
 keymap("x", "J", ":m '>+1<CR>gv=gv", opts)
@@ -85,7 +91,6 @@ keymap("n", '<leader>f', function()
     builtin.find_files(themes.get_dropdown({previewer=false}))
 
 end, opts)
- 
 -- Toggle NvimTree
 keymap("n", "<leader>d", ":NvimTreeToggle<CR>", opts)
 
