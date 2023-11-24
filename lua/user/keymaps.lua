@@ -40,7 +40,7 @@ keymap("n", "<A-j>", ":m .+1<CR>==", opts)
 keymap("n", "<A-k>", ":m .-2<CR>==", opts)
 
 -- Insert --
--- Press jk fast to exit insert mode 
+-- Press jk fast to exit insert mode
 keymap("i", "jk", "<ESC>", opts)
 keymap("i", "kj", "<ESC>", opts)
 
@@ -54,12 +54,15 @@ keymap("v", "<A-j>", ":m '>+1<CR>gv=gv", opts)
 keymap("v", "<A-k>", ":m '<-2<CR>gv=gv", opts)
 keymap("v", "p", '"_dP', opts)
 
--- Command mode
+-- File related commands
 -- Quit and save all buffers
-keymap("n", "<leader>q", ":bufdo wq!<CR>")
+keymap("n", "<leader>q", ":wqa!<CR>")
 
 -- Quits all buffers without saving
 keymap("n", "<A-q>", ":qa!<CR>")
+-- Save current file
+keymap("n", "<leader>s", "<cmd>w<CR>")
+
 -- Visual Block --
 -- Move text up and down
 keymap("x", "J", ":m '>+1<CR>gv=gv", opts)
@@ -82,16 +85,40 @@ keymap("n", "<leader>a", "ggVG")
 
 -- Open find_files
 keymap("n", '<leader>f', function()
-    local status_ok, builtin = pcall(require, "telescope.builtin")
-    if not status_ok then
-        vim.notify("Can't execute telescope keymap, no builtins found")
-       return
-    end
-    local themes = require("telescope.themes")
-    builtin.find_files(themes.get_dropdown({previewer=false}))
-
+  local status_ok, builtin = pcall(require, "telescope.builtin")
+  if not status_ok then
+    vim.notify("Can't execute telescope keymap, no builtins found")
+    return
+  end
+  local themes = require("telescope.themes")
+  builtin.find_files(themes.get_dropdown({ previewer = false }))
 end, opts)
 -- Toggle NvimTree
 keymap("n", "<leader>d", ":NvimTreeToggle<CR>", opts)
-
 keymap("x", "<leader>c", "gc", opts)
+
+-- Conform - formatting
+keymap({ "n", "v" }, "<leader>fm", function()
+  local status_ok, conform = pcall(require, "conform")
+  if not status_ok then
+    vim.notify("Couldn't format, conform not found")
+    return
+  end
+  conform.format({
+    lsp_fallback = true,
+    async = false,
+    timeout_ms = 500
+  })
+end, { desc = "Format current file or range" })
+
+
+-- Linting
+keymap("n", "<leader>l", function()
+  local status_ok, lint = pcall(require, "lint")
+  if not status_ok then
+    vim.notify("Couldn't find lint")
+    return
+  end
+
+  lint.try_lint()
+end)
