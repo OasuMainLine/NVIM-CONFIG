@@ -1,5 +1,5 @@
 -- This file contains the general nvim configurations
--- The full set of options is on  https://vimdoc.sourceforge.net/htmldoc/options.html#option-summary 
+-- The full set of options is on  https://vimdoc.sourceforge.net/htmldoc/options.html#option-summary
 local options = {
   backup = false,                          -- creates a backup file
   wildmenu = true,
@@ -27,13 +27,12 @@ local options = {
   expandtab = true,                        -- convert tabs to spaces
   shiftwidth = 2,                          -- the number of spaces inserted for each indentation
   tabstop = 2,                             -- insert 2 spaces for a tab
-  cursorline = false,                       -- highlight the current line
+  cursorline = false,                      -- highlight the current line
   number = true,                           -- set numbered lines
   relativenumber = false,                  -- set relative numbered lines
   numberwidth = 1,                         -- set number column width to 2 {default 4}
-
   signcolumn = "yes",                      -- always show the sign column, otherwise it would shift the text each time
-  wrap = false,                             -- display lines as one long line
+  wrap = false,                            -- display lines as one long line
   linebreak = true,                        -- companion to wrap, don't split words
   scrolloff = 8,                           -- minimal number of screen lines to keep above and below the cursor
   sidescrolloff = 8,                       -- minimal number of screen columns either side of cursor if wrap is `false`
@@ -46,13 +45,16 @@ for k, v in pairs(options) do
 end
 
 -- vim.opt.shortmess = "ilmnrx"                        -- flags to shorten vim messages, see :help 'shortmess'
-vim.opt.shortmess:append "c"                           -- don't give |ins-completion-menu| messages
-vim.opt.iskeyword:append "-"                           -- hyphenated words recognized by searches
-vim.opt.formatoptions:remove({ "c", "r", "o" })        -- don't insert the current comment leader automatically for auto-wrapping comments using 'textwidth', hitting <Enter> in insert mode, or hitting 'o' or 'O' in normal mode.
-vim.opt.runtimepath:remove("/usr/share/vim/vimfiles")  -- separate vim plugins from neovim in case vim still in use
+vim.opt.shortmess:append "c"                          -- don't give |ins-completion-menu| messages
+vim.opt.iskeyword:append "-"                          -- hyphenated words recognized by searches
+vim.opt.formatoptions:remove({ "c", "r", "o" })       -- don't insert the current comment leader automatically for auto-wrapping comments using 'textwidth', hitting <Enter> in insert mode, or hitting 'o' or 'O' in normal mode.
+vim.opt.runtimepath:remove("/usr/share/vim/vimfiles") -- separate vim plugins from neovim in case vim still in use
 
 -- Disabling netrw for nvim-tree to work
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
-
-
+vim.cmd [[
+  if $TERM == 'alacritty'
+    set ttymouse=sgr
+  endif
+]]

@@ -91,7 +91,10 @@ local attach_plugins = function(use)
     requires = { "kyazdani42/nvim-web-devicons", opt = true }
   })
 
-  -- Git
+  -- Bufferline
+
+  use { 'akinsho/bufferline.nvim', tag = "v4.4.0", requires = 'nvim-tree/nvim-web-devicons' }
+  --Git
   use({ "lewis6991/gitsigns.nvim" })
 
   -- startup
