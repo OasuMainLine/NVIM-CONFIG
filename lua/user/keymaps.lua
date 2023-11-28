@@ -5,6 +5,18 @@ local term_opts = { silent = true }
 -- Shorten function name
 local keymap = vim.keymap.set
 
+-- Helper global to close terminals
+function Close_all_terminal_buffers()
+	local buffers = vim.fn.getbufinfo({ buftype = "terminal" })
+	for _, buffer in ipairs(buffers) do
+		local bufnr = buffer.bufnr
+		local buftype = vim.api.nvim_buf_get_option(bufnr, "buftype")
+		if buftype == "terminal" then
+			vim.cmd("bd! " .. buffer.bufnr)
+		end
+	end
+end
+
 --Remap space as leader key
 keymap("", "<Space>", "<Nop>", opts)
 vim.g.mapleader = " "
@@ -56,12 +68,15 @@ keymap("v", "p", '"_dP', opts)
 
 -- File related commands
 -- Quit and save all buffers
-keymap("n", "<leader>q", ":wqa!<CR>")
+keymap("n", "<leader>q", ":wqa<CR>")
 
--- Quits all buffers without saving
-keymap("n", "<A-q>", ":qa!<CR>")
+-- Quits all buffers while saving
+keymap("n", "<leader>w", function()
+	Close_all_terminal_buffers()
+	vim.cmd("wqa!")
+end, opts)
 -- Save current file
-keymap("n", "<leader>s", "<cmd>w<CR>")
+keymap("n", "<leader>s", "<cmd>w<CR>", opts)
 
 -- Visual Block --
 -- Move text up and down
@@ -73,25 +88,25 @@ keymap("x", "<A-k>", ":m '<-2<CR>gv=gv", opts)
 keymap("n", "<leader>a", "ggVG")
 -- Terminal --
 -- Better terminal navigation
--- keymap("t", "<C-h>", "<C-\\><C-N><C-w>h", term_opts)
--- keymap("t", "<C-j>", "<C-\\><C-N><C-w>j", term_opts)
--- keymap("t", "<C-k>", "<C-\\><C-N><C-w>k", term_opts)
--- keymap("t", "<C-l>", "<C-\\><C-N><C-w>l", term_opts)
+keymap("t", "<C-h>", "<C-\\><C-N><C-w>h", term_opts)
+keymap("t", "<C-j>", "<C-\\><C-N><C-w>j", term_opts)
+keymap("t", "<C-k>", "<C-\\><C-N><C-w>k", term_opts)
+keymap("t", "<C-l>", "<C-\\><C-N><C-w>l", term_opts)
+keymap("t", "<esc>", "<C-\\><C-N>", term_opts)
 --
 --
 -- Plugins --
 -- Plugin related keymaps
 
-
 -- Open find_files
-keymap("n", '<leader>f', function()
-  local status_ok, builtin = pcall(require, "telescope.builtin")
-  if not status_ok then
-    vim.notify("Can't execute telescope keymap, no builtins found")
-    return
-  end
-  local themes = require("telescope.themes")
-  builtin.find_files(themes.get_dropdown({ previewer = false }))
+keymap("n", "<leader>f", function()
+	local status_ok, builtin = pcall(require, "telescope.builtin")
+	if not status_ok then
+		vim.notify("Can't execute telescope keymap, no builtins found")
+		return
+	end
+	local themes = require("telescope.themes")
+	builtin.find_files(themes.get_dropdown({ previewer = false }))
 end, opts)
 -- Toggle NvimTree
 keymap("n", "<leader>d", ":NvimTreeToggle<CR>", opts)
@@ -99,26 +114,36 @@ keymap("x", "<leader>c", "gc", opts)
 
 -- Conform - formatting
 keymap({ "n", "v" }, "<leader>fm", function()
-  local status_ok, conform = pcall(require, "conform")
-  if not status_ok then
-    vim.notify("Couldn't format, conform not found")
-    return
-  end
-  conform.format({
-    lsp_fallback = true,
-    async = false,
-    timeout_ms = 500
-  })
+	local status_ok, conform = pcall(require, "conform")
+	if not status_ok then
+		vim.notify("Couldn't format, conform not found")
+		return
+	end
+	conform.format()
 end, { desc = "Format current file or range" })
-
 
 -- Linting
 keymap("n", "<leader>l", function()
-  local status_ok, lint = pcall(require, "lint")
-  if not status_ok then
-    vim.notify("Couldn't find lint")
-    return
-  end
+	local status_ok, lint = pcall(require, "lint")
+	if not status_ok then
+		vim.notify("Couldn't find lint")
+		return
+	end
 
-  lint.try_lint()
-end)
+	lint.try_lint()
+end, opts)
+
+-- buffers
+for i = -1, 10, 1 do
+	keymap(
+		"n",
+		"<leader>" .. i,
+		[[<cmd>lua require"bufferline".go_to(]] .. i .. ", true)<CR>",
+		{ desc = "Go to buffer number " .. i, silent = true }
+	)
+end
+
+keymap("n", "<leader>p", [[<cmd>BufferLineCyclePrev<CR>]], opts)
+keymap("n", "<leader>n", [[<cmd>BufferLineCycleNext<CR>]], opts)
+
+keymap("n", "<leader>ct", "<cmd>lua Close_all_terminal_buffers()<CR>", opts)

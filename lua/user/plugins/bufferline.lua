@@ -6,4 +6,10 @@ if not status_ok then
 end
 
 
-bufferline.setup()
+bufferline.setup(
+  {
+    options = {
+      diagnostics = "nvim_lsp",
+    }
+  }
+)
