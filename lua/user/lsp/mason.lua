@@ -1,12 +1,13 @@
 local servers = {
 	"lua_ls",
-	 "cssls",
-	 "html",
-	 "tsserver",
+	"cssls",
+	"html",
+	"tsserver",
 	"pyright",
 	"bashls",
 	"jsonls",
 	"yamlls",
+	"rust_analyzer",
 }
 
 local settings = {
@@ -49,4 +50,3 @@ for _, server in pairs(servers) do
 	end
 	lspconfig[server].setup(opts)
 end
-

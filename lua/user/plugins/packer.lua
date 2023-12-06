@@ -72,6 +72,7 @@ local attach_plugins = function(use)
 		"nvim-treesitter/nvim-treesitter",
 		run = ":TSUpdate",
 	})
+	use({ "HiPhish/rainbow-delimiters.nvim", tag = "v0.2.0" })
 	-- File Explorer
 	use({
 		"nvim-tree/nvim-web-devicons",
@@ -92,6 +93,11 @@ local attach_plugins = function(use)
 	-- Colorschemes
 	use("lunarvim/darkplus.nvim")
 
+	-- Surround
+	use({ "kylechui/nvim-surround", tag = "v2.1.3" })
+	-- Autoclose
+	use("m4xshen/autoclose.nvim")
+	use({ "windwp/nvim-ts-autotag" })
 	-- Statusline
 	use({
 		"NTBBloodbath/galaxyline.nvim",
@@ -102,6 +108,8 @@ local attach_plugins = function(use)
 		-- some optional icons
 		requires = { "kyazdani42/nvim-web-devicons", opt = true },
 	})
+	-- Python venv
+	use({ "linux-cultist/venv-selector.nvim", requires = { "mfussenegger/nvim-dap-python" } })
 
 	-- Bufferline
 
@@ -109,12 +117,17 @@ local attach_plugins = function(use)
 	--Git
 	use({ "lewis6991/gitsigns.nvim" })
 
+	-- sessions
+	use({ "natecraddock/sessions.nvim" })
+
+	-- Harpoon
+	use({ "ThePrimeagen/harpoon", branch = "harpoon2", requires = "nvim-lua/plenary.nvim" })
+
 	-- startup
 	use({
 		"goolord/alpha-nvim",
 	})
-	-- sessions
-	use({ "natecraddock/sessions.nvim" })
+
 	if packer_bootstrap then
 		require("packer").sync()
 	end

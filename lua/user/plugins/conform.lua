@@ -1,6 +1,7 @@
 local status_ok, conform = pcall(require, "conform")
 
 if not status_ok then
+	use("m4xshen/autoclose.nvim")
 	vim.notify("couldn't find conform")
 	return
 end

@@ -145,5 +145,5 @@ end
 
 keymap("n", "<leader>p", [[<cmd>BufferLineCyclePrev<CR>]], opts)
 keymap("n", "<leader>n", [[<cmd>BufferLineCycleNext<CR>]], opts)
-
+keymap("n", "<leader>ca", [[<cmd>%bd|e#|bd#<CR>]], opts)
 keymap("n", "<leader>ct", "<cmd>lua Close_all_terminal_buffers()<CR>", opts)
