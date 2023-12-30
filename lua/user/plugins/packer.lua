@@ -54,10 +54,17 @@ local attach_plugins = function(use)
 		"stevearc/conform.nvim",
 		event = { "BufReadPre", "BufNewFile" },
 		config = function()
-			require("user.plugins.conform").setup()
+			-- require("user.plugins.conform").setup()
 		end,
 	})
 
+	-- None-ls (null-ls)
+	use({
+		"nvimtools/none-ls.nvim",
+		config = function()
+			require("user.plugins.none-ls").setup()
+		end,
+	})
 	-- Linting
 	use({
 		"mfussenegger/nvim-lint",
@@ -69,9 +76,9 @@ local attach_plugins = function(use)
 
 	-- Highlighting
 	use({
-		"nvim-treesitter/nvim-treesitter",
-		run = ":TSUpdate",
-	})
+	 	"nvim-treesitter/nvim-treesitter",
+	 	run = ":TSUpdate",
+	 })
 	use({ "HiPhish/rainbow-delimiters.nvim", tag = "v0.2.0" })
 	-- File Explorer
 	use({
@@ -94,7 +101,18 @@ local attach_plugins = function(use)
 	use("lunarvim/darkplus.nvim")
 
 	-- Surround
-	use({ "kylechui/nvim-surround", tag = "v2.1.3" })
+	use({
+		"kylechui/nvim-surround",
+		tag = "v2.1.3",
+		config = function()
+			local status_ok, surround = pcall(require, "nvim-surround")
+			if not status_ok then
+				vim.notify("Couldn't load nvim surround")
+				return
+			end
+			surround.setup({})
+		end,
+	})
 	-- Autoclose
 	use("m4xshen/autoclose.nvim")
 	use({ "windwp/nvim-ts-autotag" })
@@ -113,7 +131,8 @@ local attach_plugins = function(use)
 
 	-- Bufferline
 
-	use({ "akinsho/bufferline.nvim", tag = "v4.4.0", requires = "nvim-tree/nvim-web-devicons" })
+	-- use({ "akinsho/bufferline.nvim", tag = "v4.4.0", requires = "nvim-tree/nvim-web-devicons" })
+	-- Testing flow without bufferline
 	--Git
 	use({ "lewis6991/gitsigns.nvim" })
 

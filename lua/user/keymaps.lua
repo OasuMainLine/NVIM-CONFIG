@@ -98,6 +98,7 @@ keymap("t", "<esc>", "<C-\\><C-N>", term_opts)
 -- Plugins --
 -- Plugin related keymaps
 
+-- Telescope
 -- Open find_files
 keymap("n", "<leader>f", function()
 	local status_ok, builtin = pcall(require, "telescope.builtin")
@@ -108,10 +109,21 @@ keymap("n", "<leader>f", function()
 	local themes = require("telescope.themes")
 	builtin.find_files(themes.get_dropdown({ previewer = false }))
 end, opts)
+-- Open find_buffer
+keymap("n", "<leader>b", function()
+	local status_ok, builtin = pcall(require, "telescope.builtin")
+	if not status_ok then
+		vim.notify("Can't execute telescope keymap, no builtins found'")
+		return
+	end
+	local themes = require("telescope.themes")
+	builtin.buffers(themes.get_dropdown({ previewer = false }))
+end)
 -- Toggle NvimTree
 keymap("n", "<leader>d", ":NvimTreeToggle<CR>", opts)
 keymap("x", "<leader>c", "gc", opts)
-
+-- Toggle Telescope project
+keymap("n", "<leader>p", ':lua require("telescope").extensions.project.project{}<CR>')
 -- Conform - formatting
 keymap({ "n", "v" }, "<leader>fm", function()
 	local status_ok, conform = pcall(require, "conform")
@@ -131,19 +143,8 @@ keymap("n", "<leader>l", function()
 	end
 
 	lint.try_lint()
+	vim.notify("linted")
 end, opts)
-
--- buffers
-for i = -1, 10, 1 do
-	keymap(
-		"n",
-		"<leader>" .. i,
-		[[<cmd>lua require"bufferline".go_to(]] .. i .. ", true)<CR>",
-		{ desc = "Go to buffer number " .. i, silent = true }
-	)
-end
-
-keymap("n", "<leader>p", [[<cmd>BufferLineCyclePrev<CR>]], opts)
-keymap("n", "<leader>n", [[<cmd>BufferLineCycleNext<CR>]], opts)
+-- Close all buffers but this one
 keymap("n", "<leader>ca", [[<cmd>%bd|e#|bd#<CR>]], opts)
 keymap("n", "<leader>ct", "<cmd>lua Close_all_terminal_buffers()<CR>", opts)

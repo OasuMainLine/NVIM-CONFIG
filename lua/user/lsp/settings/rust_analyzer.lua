@@ -1,7 +1,12 @@
+local util = require("lspconfig/util")
 return {
+	filetypes = { "rust" },
+	root_dir = util.root_pattern("Cargo.toml"),
 	settings = {
-		checkOnSave = {
-			command = "clippy",
+		["rust-analyzer"] = {
+			cargo = {
+				allFeatures = true,
+			},
 		},
 	},
 }

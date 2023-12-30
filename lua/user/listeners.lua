@@ -2,7 +2,7 @@ local subscribe = vim.api.nvim_create_autocmd
 
 local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
 
-subscribe({ "BufEnter", "BufWritePost", "InsertLeave" }, {
+subscribe({ "BufEnter", "BufWritePost", "InsertLeave", "InsertEnter" }, {
 	group = lint_augroup,
 	pattern = "*.*",
 	callback = function()
@@ -15,6 +15,7 @@ subscribe({ "BufEnter", "BufWritePost", "InsertLeave" }, {
 		lint.try_lint()
 	end,
 })
+
 subscribe({ "BufEnter" }, {
 	callback = function()
 		local filetype = vim.bo.filetype
